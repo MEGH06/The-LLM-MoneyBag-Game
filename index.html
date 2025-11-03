@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Engineering Game - 4 Stages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jolly+Lodger&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,177 +15,174 @@
         html, body {
             height: 100%;
             width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
         }
 
         body {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
         }
 
-        .game-wrapper {
+        /* Dynamic gradients for each character */
+        body.pirate-theme {
+            background: linear-gradient(135deg, #2d1b4e 0%, #512b81 50%, #2d1b4e 100%);
+        }
+
+        body.banker-theme {
+            background: linear-gradient(135deg, #1a472a 0%, #2d8659 50%, #1a472a 100%);
+        }
+
+        body.hacker-theme {
+            background: linear-gradient(135deg, #1a1a3e 0%, #2d2d7c 50%, #1a1a3e 100%);
+        }
+
+        body.philanthropist-theme {
+            background: linear-gradient(135deg, #4a1942 0%, #8b2f7c 50%, #4a1942 100%);
+        }
+
+        body.dragon-theme {
+            background: linear-gradient(135deg, #5a2a0a 0%, #a04e1a 50%, #5a2a0a 100%);
+        }
+
+        body.scientist-theme {
+            background: linear-gradient(135deg, #0a3d5a 0%, #1a6b8b 50%, #0a3d5a 100%);
+        }
+
+        .game-container {
             width: 100%;
+            max-width: 1000px;
             height: 100vh;
-            max-width: 900px;
-            max-height: 90vh;
             display: flex;
             flex-direction: column;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            background: #fff;
-        }
-
-        /* Dynamic backgrounds for each character */
-        .game-wrapper.pirate-theme {
-            background: linear-gradient(135deg, #8B4513 0%, #3d2817 100%);
-        }
-
-        .game-wrapper.banker-theme {
-            background: linear-gradient(135deg, #1a3a52 0%, #0f1f2a 100%);
-        }
-
-        .game-wrapper.hacker-theme {
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3a 100%);
-        }
-
-        .game-wrapper.philanthropist-theme {
-            background: linear-gradient(135deg, #FF69B4 0%, #d946b8 100%);
-        }
-
-        .game-wrapper.dragon-theme {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        }
-
-        .game-wrapper.scientist-theme {
-            background: linear-gradient(135deg, #4B0082 0%, #240059 100%);
+            padding: 20px;
         }
 
         /* Header */
         .header {
-            padding: 24px;
-            border-bottom: 3px solid;
-            background: rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            flex-shrink: 0;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.6s ease-out;
         }
 
-        .header-left {
-            flex: 1;
-        }
-
-        .character-title {
-            font-size: 28px;
-            font-weight: 700;
+        .header h1 {
+            font-family: 'Jolly Lodger', cursive;
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 3px;
             margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            color: #fff;
-            animation: slideInLeft 0.6s ease-out;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        .character-emoji {
-            font-size: 36px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .stage-indicator {
-            font-size: 13px;
-            opacity: 0.9;
-            color: #fff;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 20px;
-            padding: 0 20px;
-        }
-
-        .stat {
+        .stat-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px 18px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 2px solid;
-            transition: all 0.3s ease;
-            color: #fff;
-        }
-
-        .stat:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.2);
+            gap: 4px;
         }
 
         .stat-label {
             font-size: 11px;
-            opacity: 0.8;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
         }
 
         .stat-value {
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Character Header */
+        .character-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .character-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: bounce 2s infinite;
+        }
+
+        .character-info h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 4px;
+        }
+
+        .character-info p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
         }
 
         /* Messages Area */
-        .messages-container {
+        .messages-area {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
-            border-bottom: 3px solid;
+            padding: 24px 32px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            background: rgba(0, 0, 0, 0.1);
-            scroll-behavior: smooth;
         }
 
-        .messages-container::-webkit-scrollbar {
-            width: 8px;
+        .messages-area::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .messages-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+        .messages-area::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        .messages-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
+        .messages-area::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
         }
 
-        .messages-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .welcome-message {
+        .welcome-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -192,50 +190,155 @@
             height: 100%;
             text-align: center;
             gap: 12px;
-            color: #fff;
         }
 
-        .welcome-message h2 {
-            font-size: 28px;
-            animation: fadeIn 1s ease-in;
+        .welcome-screen h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
         }
 
-        .welcome-message p {
-            font-size: 16px;
-            opacity: 0.8;
-            animation: fadeIn 1s ease-in 0.2s both;
+        .welcome-screen p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            line-height: 1.6;
+            font-weight: 400;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .message {
-            padding: 16px;
-            border-radius: 12px;
-            max-width: 80%;
+        .message-bubble {
+            max-width: 70%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            line-height: 1.5;
+            animation: slideUp 0.3s ease-out;
             word-wrap: break-word;
-            animation: slideUp 0.4s ease-out;
-            border-left: 4px solid;
-            margin: 0 auto 0 0;
+            font-weight: 400;
         }
 
-        .message.user {
-            align-self: flex-end;
-            background: rgba(100, 200, 255, 0.3);
-            border-color: #00ccff;
-            margin: 0 0 0 auto;
-        }
-
-        .message.assistant {
+        .message-bubble.assistant {
             align-self: flex-start;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.95);
+            border-bottom-left-radius: 4px;
         }
 
-        @keyframes slideUp {
+        .message-bubble.user {
+            align-self: flex-end;
+            background: var(--character-color, rgba(138, 98, 255, 0.25));
+            color: rgba(255, 255, 255, 0.95);
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px 32px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .input-wrapper input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--character-color, rgba(138, 98, 255, 0.5));
+        }
+
+        .input-wrapper input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .send-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--character-color, rgba(138, 98, 255, 0.8));
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            background: var(--character-color-hover, rgba(138, 98, 255, 1));
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-button:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .action-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -246,290 +349,180 @@
             }
         }
 
-        .message-content {
-            font-size: 14px;
-            line-height: 1.6;
-            word-break: break-word;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .victory-message {
-            padding: 32px;
-            background: linear-gradient(135deg, #fff700 0%, #ff8800 100%);
-            border-radius: 16px;
-            text-align: center;
-            color: #000;
-            margin: 20px auto;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(255, 200, 0, 0.5);
-            animation: pulse 1s ease-in-out infinite;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .victory-message h2 {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Input Area */
-        .input-area {
-            padding: 20px;
-            border-top: 3px solid;
-            background: rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            backdrop-filter: blur(10px);
-            flex-shrink: 0;
-        }
-
-        .input-wrapper {
-            display: flex;
-            gap: 12px;
-        }
-
-        .input-wrapper input {
-            flex: 1;
-            padding: 14px 16px;
-            border: 2px solid;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .input-wrapper input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .input-wrapper input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .input-wrapper input:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .input-wrapper button,
-        .action-buttons button {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .input-wrapper button {
-            min-width: 100px;
-        }
-
-        .input-wrapper button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        .input-wrapper button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .hint-button {
-            flex: 1;
-            background: #FFD700;
-            color: #000;
-        }
-
-        .hint-button:hover:not(:disabled) {
-            background: #FFC700;
-        }
-
-        .hint-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .reset-button {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.3);
-            color: #fff;
-            border: 2px solid #fff;
-        }
-
-        .reset-button:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .reset-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
+            .game-container {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .stats-bar {
                 gap: 16px;
-                padding: 16px;
             }
 
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-                padding: 0;
-                gap: 12px;
+            .character-header {
+                padding: 20px 24px;
             }
 
-            .character-title {
-                font-size: 22px;
+            .messages-area {
+                padding: 20px 24px;
             }
 
-            .stat {
-                padding: 10px 14px;
+            .input-area {
+                padding: 16px 24px 20px;
             }
 
-            .stat-value {
-                font-size: 18px;
-            }
-
-            .message {
-                max-width: 95%;
-            }
-
-            .action-buttons {
-                flex-wrap: wrap;
-            }
-
-            .hint-button,
-            .reset-button {
-                min-width: calc(50% - 6px);
+            .message-bubble {
+                max-width: 85%;
             }
         }
     </style>
 </head>
-<body>
-    <div class="game-wrapper" id="gameWrapper">
+<body class="pirate-theme">
+    <div class="game-container">
         <!-- Header -->
         <div class="header">
-            <div class="header-left">
-                <h1 class="character-title">
-                    <span class="character-emoji" id="characterEmoji">🏴‍☠️</span>
-                    <span id="characterName">Grumpy Pirate</span>
-                </h1>
-                <p class="stage-indicator" id="stageIndicator">Stage 1/5</p>
+            <h1>AI Assistant</h1>
+            <p>all your answers on our fingertips</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">Time</span>
+                <span class="stat-value" id="timerValue">4:00</span>
             </div>
-            
-            <div class="header-right">
-                <div class="stat" id="timerStat">
-                    <span class="stat-label">⏰ Time</span>
-                    <span class="stat-value" id="timerValue">4:00</span>
-                </div>
-                <div class="stat" id="xpStat">
-                    <span class="stat-label">XP</span>
-                    <span class="stat-value" id="xpValue">0</span>
-                </div>
-                <div class="stat" id="messagesStat">
-                    <span class="stat-label">Messages</span>
-                    <span class="stat-value" id="messagesValue">0</span>
-                </div>
-                <div class="stat" id="hintsStat">
-                    <span class="stat-label">Hints</span>
-                    <span class="stat-value" id="hintsValue">0/3</span>
-                </div>
+            <div class="stat-item">
+                <span class="stat-label">Stage</span>
+                <span class="stat-value" id="stageIndicator">1/5</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">XP</span>
+                <span class="stat-value" id="xpValue">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Messages</span>
+                <span class="stat-value" id="messagesValue">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Hints</span>
+                <span class="stat-value" id="hintsValue">0/3</span>
             </div>
         </div>
 
-        <!-- Messages Area -->
-        <div class="messages-container" id="messagesContainer">
-            <!-- Welcome message will be dynamically inserted here -->
-        </div>
-
-        <!-- Input Area -->
-        <div class="input-area">
-            <div class="input-wrapper">
-                <input
-                    type="text"
-                    id="messageInput"
-                    placeholder="Type your social engineering attempt..."
-                    autocomplete="off"
-                />
-                <button id="sendButton">Send</button>
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <!-- Character Header -->
+            <div class="character-header">
+                <div class="character-avatar" id="characterEmoji">🏴‍☠️</div>
+                <div class="character-info">
+                    <h2 id="characterName">Grumpy Pirate</h2>
+                    <p id="characterStatus">Ready to chat</p>
+                </div>
             </div>
 
-            <div class="action-buttons">
-                <button id="hintButton" class="hint-button">💡 Hint (0/3)</button>
-                <button id="resetButton" class="reset-button">🔄 Reset Game</button>
+            <!-- Messages Area -->
+            <div class="messages-area" id="messagesContainer">
+                <!-- Welcome screen will be inserted here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Type your social engineering attempt..."
+                        autocomplete="off"
+                    />
+                    <button class="send-button" id="sendButton">
+                        ➤
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-button" id="hintButton">Hint (0/3)</button>
+                    <button class="action-button" id="resetButton">Reset Game</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Character-specific welcome messages and styles
         const CHARACTER_DATA = {
             "Grumpy Pirate": {
                 emoji: "🏴‍☠️",
                 theme: "pirate-theme",
-                accentColor: "#FFD700",
-                welcomeTitle: "⚓ Prepare to face the Grumpy Pirate! ⚓",
+                color: "rgba(138, 98, 255, 0.6)",
+                colorHover: "rgba(138, 98, 255, 0.8)",
+                welcomeTitle: "Prepare to face the Grumpy Pirate!",
                 welcomeDesc: "This cynical corsair respects only those who speak the language of the seas. Show your pirate knowledge!",
                 systemPrompt: "You're engaging with a battle-hardened pirate..."
             },
             "Strict Banker": {
                 emoji: "💼",
                 theme: "banker-theme",
-                accentColor: "#4CAF50",
-                welcomeTitle: "📊 Enter the Vault with the Strict Banker 📊",
+                color: "rgba(45, 134, 89, 0.6)",
+                colorHover: "rgba(45, 134, 89, 0.8)",
+                welcomeTitle: "Enter the Vault with the Strict Banker",
                 welcomeDesc: "This meticulous financial professional demands proper protocols and compliance. Show your regulatory expertise!",
                 systemPrompt: "You're dealing with a compliance-obsessed banker..."
             },
             "Paranoid Hacker": {
                 emoji: "🔐",
                 theme: "hacker-theme",
-                accentColor: "#00ff00",
-                welcomeTitle: "💻 Hack Your Way Past the Paranoid Hacker 💻",
+                color: "rgba(45, 45, 124, 0.6)",
+                colorHover: "rgba(45, 45, 124, 0.8)",
+                welcomeTitle: "Hack Your Way Past the Paranoid Hacker",
                 welcomeDesc: "This security expert respects only technical prowess. Demonstrate your cyber knowledge to break through!",
                 systemPrompt: "You're facing a security-focused hacker..."
             },
             "Confused Philanthropist": {
                 emoji: "🎭",
                 theme: "philanthropist-theme",
-                accentColor: "#FFD700",
-                welcomeTitle: "💰 Appeal to the Confused Philanthropist 💰",
+                color: "rgba(139, 47, 124, 0.6)",
+                colorHover: "rgba(139, 47, 124, 0.8)",
+                welcomeTitle: "Appeal to the Confused Philanthropist",
                 welcomeDesc: "This wealthy donor is easily swayed by emotion and compelling stories. Use your persuasion skills wisely!",
                 systemPrompt: "You're encountering a well-meaning but scatterbrained philanthropist..."
             },
             "Ancient Dragon": {
                 emoji: "🐉",
                 theme: "dragon-theme",
-                accentColor: "#FF0000",
-                welcomeTitle: "👑 Outwit the Ancient Dragon 👑",
+                color: "rgba(160, 78, 26, 0.6)",
+                colorHover: "rgba(160, 78, 26, 0.8)",
+                welcomeTitle: "Outwit the Ancient Dragon",
                 welcomeDesc: "This proud ancient being values wit, cleverness, and respect above all. Impress them with your intellect!",
                 systemPrompt: "You're facing a legendary dragon..."
             },
             "Skeptical Scientist": {
                 emoji: "🧪",
                 theme: "scientist-theme",
-                accentColor: "#00FFFF",
-                welcomeTitle: "🔬 Convince the Skeptical Scientist 🔬",
+                color: "rgba(26, 107, 139, 0.6)",
+                colorHover: "rgba(26, 107, 139, 0.8)",
+                welcomeTitle: "Convince the Skeptical Scientist",
                 welcomeDesc: "This evidence-driven researcher demands peer-reviewed facts and logical reasoning. Present your case with data!",
                 systemPrompt: "You're debating a rigorous scientist..."
             }
@@ -546,9 +539,10 @@
         let hintsUsed = 0;
         let gameWon = false;
         let loading = false;
+        let timeRemaining = 240;
+        let timerInterval = null;
 
         // DOM Elements
-        const gameWrapper = document.getElementById("gameWrapper");
         const messagesContainer = document.getElementById("messagesContainer");
         const messageInput = document.getElementById("messageInput");
         const sendButton = document.getElementById("sendButton");
@@ -556,22 +550,19 @@
         const resetButton = document.getElementById("resetButton");
         const characterEmoji = document.getElementById("characterEmoji");
         const characterName = document.getElementById("characterName");
+        const characterStatus = document.getElementById("characterStatus");
         const stageIndicator = document.getElementById("stageIndicator");
         const timerValue = document.getElementById("timerValue");
         const xpValue = document.getElementById("xpValue");
         const messagesValue = document.getElementById("messagesValue");
         const hintsValue = document.getElementById("hintsValue");
-        
-        // Timer variables
-        let timeRemaining = 240; // 4 minutes in seconds
-        let timerInterval = null;
 
         // Initialize
         async function init() {
             await loadSessionStatus();
             updateTheme();
             createWelcomeMessage();
-            startTimer(); // Start the timer
+            startTimer();
             messageInput.addEventListener("keypress", (e) => {
                 if (e.key === "Enter" && !loading) sendMessage();
             });
@@ -592,8 +583,8 @@
                 totalMessages = data.total_messages;
                 gameWon = data.game_won;
                 messagesInStage = 0;
-                hintsUsed = data.hints_used_current_stage || 0; // Get hint count from server
-                timeRemaining = data.time_remaining || 240; // Get time from server
+                hintsUsed = data.hints_used_current_stage || 0;
+                timeRemaining = data.time_remaining || 240;
                 updateTimerDisplay();
                 updateUI();
             } catch (error) {
@@ -608,9 +599,9 @@
 
             messagesContainer.innerHTML = '';
             const welcomeDiv = document.createElement("div");
-            welcomeDiv.className = "welcome-message";
+            welcomeDiv.className = "welcome-screen";
             welcomeDiv.innerHTML = `
-                <h2>${charData.welcomeTitle}</h2>
+                <h3>${charData.welcomeTitle}</h3>
                 <p>${charData.welcomeDesc}</p>
             `;
             messagesContainer.appendChild(welcomeDiv);
@@ -620,21 +611,22 @@
         function updateTheme() {
             const charData = CHARACTER_DATA[currentCharacter];
             if (charData) {
-                gameWrapper.className = "game-wrapper " + charData.theme;
+                document.body.className = charData.theme;
                 characterEmoji.textContent = charData.emoji;
+                document.documentElement.style.setProperty('--character-color', charData.color);
+                document.documentElement.style.setProperty('--character-color-hover', charData.colorHover);
             }
         }
 
         // Update UI
         function updateUI() {
             characterName.textContent = currentCharacter;
-            stageIndicator.textContent = `Stage ${currentStage}/${totalStages}`;
+            stageIndicator.textContent = `${currentStage}/${totalStages}`;
             xpValue.textContent = totalXP;
             messagesValue.textContent = messagesInStage;
             hintsValue.textContent = `${hintsUsed}/3`;
             
-            // Update hint button text dynamically
-            hintButton.textContent = `💡 HINT (${hintsUsed}/3)`;
+            hintButton.textContent = `Hint (${hintsUsed}/3)`;
             
             messageInput.disabled = loading || gameWon;
             sendButton.disabled = loading || gameWon || !messageInput.value.trim();
@@ -655,20 +647,6 @@
         function updateTimerDisplay() {
             timerValue.textContent = formatTime(timeRemaining);
             
-            // Change color based on remaining time
-            const timerStat = document.getElementById('timerStat');
-            if (timeRemaining <= 30) {
-                timerStat.style.background = 'rgba(255, 0, 0, 0.3)';
-                timerStat.style.borderColor = '#ff0000';
-            } else if (timeRemaining <= 60) {
-                timerStat.style.background = 'rgba(255, 165, 0, 0.3)';
-                timerStat.style.borderColor = '#ffa500';
-            } else {
-                timerStat.style.background = 'rgba(255, 255, 255, 0.1)';
-                timerStat.style.borderColor = 'inherit';
-            }
-            
-            // Check if time is up
             if (timeRemaining <= 0) {
                 stopTimer();
                 handleTimeExpired();
@@ -677,7 +655,7 @@
         
         // Start timer countdown
         function startTimer() {
-            stopTimer(); // Clear any existing timer
+            stopTimer();
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 updateTimerDisplay();
@@ -698,7 +676,7 @@
             messageInput.disabled = true;
             sendButton.disabled = true;
             hintButton.disabled = true;
-            addMessageToUI("assistant", "⏰ Time's up! You've run out of time for this stage. Game over!", true);
+            addMessageToUI("assistant", "Time's up! You've run out of time for this stage. Game over!", true);
         }
 
         // Send message
@@ -709,11 +687,9 @@
             messageInput.value = "";
             loading = true;
 
-            // Remove welcome message on first message
-            const welcomeMsg = messagesContainer.querySelector(".welcome-message");
+            const welcomeMsg = messagesContainer.querySelector(".welcome-screen");
             if (welcomeMsg) welcomeMsg.remove();
 
-            // Add user message to UI
             addMessageToUI("user", userMessage);
 
             try {
@@ -728,18 +704,15 @@
 
                 const data = await response.json();
 
-                // Add assistant response with smooth streaming animation
                 addMessageToUI("assistant", data.response, true);
 
-                // Update state
                 currentStage = data.current_stage;
                 totalXP = data.total_xp;
                 totalMessages = data.total_messages;
                 messagesInStage = data.messages_in_stage;
-                timeRemaining = data.time_remaining || 0; // Update timer from server
+                timeRemaining = data.time_remaining || 0;
                 updateTimerDisplay();
                 
-                // Check if game over due to timeout
                 if (data.game_over) {
                     stopTimer();
                     gameWon = false;
@@ -750,8 +723,8 @@
 
                 if (data.won) {
                     currentCharacter = data.current_character;
-                    hintsUsed = 0; // Reset hints for new character
-                    timeRemaining = 240; // Reset timer for new stage
+                    hintsUsed = 0;
+                    timeRemaining = 240;
                     updateTimerDisplay();
                     updateTheme();
                     if (data.current_stage > data.total_stages) {
@@ -775,34 +748,26 @@
             messages.push({ role, content });
 
             const messageDiv = document.createElement("div");
-            messageDiv.className = `message ${role}`;
+            messageDiv.className = `message-bubble ${role}`;
             
-            const contentDiv = document.createElement("div");
-            contentDiv.className = "message-content";
-            
-            messageDiv.appendChild(contentDiv);
             messagesContainer.appendChild(messageDiv);
             
-            // Smooth streaming effect for assistant messages
             if (animate && role === "assistant") {
                 let index = 0;
-                contentDiv.textContent = "";
+                messageDiv.textContent = "";
                 
                 const streamText = () => {
                     if (index < content.length) {
-                        contentDiv.textContent += content[index];
+                        messageDiv.textContent += content[index];
                         index++;
                         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                        
-                        // Faster streaming: 10ms per character
                         setTimeout(streamText, 10);
                     }
                 };
                 
                 streamText();
             } else {
-                // Instant display for user messages
-                contentDiv.textContent = content;
+                messageDiv.textContent = content;
             }
             
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -813,22 +778,21 @@
             if (hintsUsed >= 3 || loading) return;
 
             loading = true;
-            updateUI(); // Disable UI immediately
+            updateUI();
             
             try {
                 const response = await fetch("/get-hint", { method: "POST" });
                 const data = await response.json();
 
-                // Add hint with smooth animation
-                addMessageToUI("assistant", `💡 Hint (Level ${data.hint_level}): ${data.hint}`, true);
-                hintsUsed = data.hint_level; // Update to actual hint count from server
-                updateUI(); // Update UI to reflect new hint count
+                addMessageToUI("assistant", `Hint (Level ${data.hint_level}): ${data.hint}`, true);
+                hintsUsed = data.hint_level;
+                updateUI();
             } catch (error) {
                 console.error("Error getting hint:", error);
                 addMessageToUI("assistant", "Could not get hint. Please try again.");
             } finally {
                 loading = false;
-                updateUI(); // Re-enable UI
+                updateUI();
             }
         }
 
@@ -840,12 +804,12 @@
                 messagesInStage = 0;
                 hintsUsed = 0;
                 gameWon = false;
-                timeRemaining = 240; // Reset timer
+                timeRemaining = 240;
                 messageInput.value = "";
-                stopTimer(); // Stop any existing timer
+                stopTimer();
                 await loadSessionStatus();
                 createWelcomeMessage();
-                startTimer(); // Restart timer
+                startTimer();
                 updateUI();
             } catch (error) {
                 console.error("Error resetting game:", error);
