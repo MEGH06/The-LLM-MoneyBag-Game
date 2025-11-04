@@ -33,7 +33,7 @@ class GameSession:
         self.game_won = False
         self.game_over = False  # True if time expired
         self.conversation_history = []  # Full conversation history across all stages
-        self.STAGE_TIME_LIMIT = 240  # 4 minutes (240 seconds) per stage
+        self.STAGE_TIME_LIMIT = 300  # 5 minutes (300 seconds) per stage
         
     def reset(self):
         """Reset the session and select 4 random characters from 5 available."""
@@ -46,7 +46,7 @@ class GameSession:
         self.stages_completed = []
         self.message_count_per_stage = {}
         self.hints_used_per_stage = {}
-        self.stage_start_times = {0: time.time()}  # Start timer for stage 0
+        self.stage_start_times = {0: time.time()}  # Start timer for stage 0 (5 minutes)
         self.xp_earned = 0
         self.total_messages = 0
         self.game_won = False
@@ -60,7 +60,7 @@ class GameSession:
         print(f"[SESSION] Character order (4 of 5): {' → '.join(self.character_order)}")
         print(f"[SESSION] Stage 1: {self.current_character}")
         print(f"[SESSION] Win condition: {self.current_condition_id}")
-        print(f"[SESSION] Timer started: 4 minutes per stage")
+        print(f"[SESSION] Timer started: 5 minutes per stage")
     
     def _assign_win_condition(self):
         """Assign a random win condition for the current stage."""
@@ -110,7 +110,23 @@ class GameSession:
     def record_hint_used(self):
         """Record that a hint was used in the current stage."""
         stage_key = self.current_stage
-        self.hints_used_per_stage[stage_key] = self.hints_used_per_stage.get(stage_key, 0) + 1
+        new_count = self.hints_used_per_stage.get(stage_key, 0) + 1
+        self.hints_used_per_stage[stage_key] = new_count
+        return new_count
+
+    def deduct_xp(self, amount: int) -> int:
+        """Deduct XP from the player's total balance (clamped at 0).
+
+        Returns the new total XP.
+        """
+        try:
+            amount = int(amount)
+        except Exception:
+            amount = 0
+
+        # Allow negative balances so that hint purchases can show as -25, -75, etc.
+        self.xp_earned = self.xp_earned - amount
+        return self.xp_earned
     
     def get_time_remaining(self) -> float:
         """Get remaining time in seconds for the current stage."""
@@ -147,33 +163,19 @@ class GameSession:
         
         print(f"[SESSION] Advanced to Stage {self.current_stage + 1}: {self.current_character}")
         print(f"[SESSION] Win condition: {self.current_condition_id}")
-        print(f"[SESSION] Timer started: 4 minutes for this stage")
+    print(f"[SESSION] Timer started: 5 minutes for this stage")
     
-    def calculate_xp_for_win(self, messages_used: int) -> int:
+    def calculate_xp_for_win(self, messages_used: int = 0) -> int:
         """
-        Calculate XP earned for winning against the current character.
-        
-        Formula:
-        - base_xp = 100
-        - level_multiplier = level (1-5, currently current_stage + 1)
-        - efficiency_bonus = (max_messages - messages_used) / max_messages * 50
-        - hint_penalty = hints_used * 10
-        - total = base_xp * level_multiplier + efficiency_bonus - hint_penalty
+        Award fixed XP for clearing a character.
+
+        Per requirement: each cleared character grants 150 XP.
+        Hints are charged immediately when requested (so they are not re-deducted here).
         """
-        base_xp = 100
-        level = self.current_stage + 1
-        max_messages_per_stage = 15
-        
-        level_multiplier = level
-        efficiency_bonus = max(0, ((max_messages_per_stage - messages_used) / max_messages_per_stage) * 50)
-        hint_penalty = self.hints_used_per_stage.get(self.current_stage, 0) * 10
-        
-        total_xp = int(base_xp * level_multiplier + efficiency_bonus - hint_penalty)
-        total_xp = max(50, total_xp)  # Minimum 50 XP
-        
-        self.xp_earned += total_xp
-        
-        return total_xp
+        base_award = 150
+        awarded = int(base_award)
+        self.xp_earned += awarded
+        return awarded
     
     def get_progress_summary(self) -> dict:
         """Get a summary of game progress."""

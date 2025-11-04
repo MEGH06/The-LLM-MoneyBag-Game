@@ -75,6 +75,7 @@ class HintResponse(BaseModel):
     hint: str
     hint_level: int
     character: str
+    total_xp: int | None = None
 
 
 class ProgressResponse(BaseModel):
@@ -132,7 +133,7 @@ app.add_middleware(
 @app.get("/")
 async def root():
     """Serve the HTML frontend."""
-    with open("index.html", "r", encoding="utf-8") as f:
+    with open("index.html", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
 
 
@@ -187,13 +188,21 @@ async def get_hint() -> HintResponse:
     
     print(f"[HINT] Level {hint_level} for {condition_id}: {hint[:60]}...")
     
-    # Record hint usage
-    game_session.record_hint_used()
+    # Record hint usage and deduct XP cost immediately
+    new_hints_used = game_session.record_hint_used()  # returns new hint count (1-3)
+
+    # Cost mapping per hint level
+    HINT_COSTS = {1: 25, 2: 50, 3: 75}
+    cost = HINT_COSTS.get(new_hints_used, 0)
+
+    # Deduct from player's XP balance (clamped at 0)
+    new_total_xp = game_session.deduct_xp(cost)
     
     return HintResponse(
         hint=hint,
         hint_level=hint_level,
         character=character_name,
+        total_xp=new_total_xp,
     )
 
 

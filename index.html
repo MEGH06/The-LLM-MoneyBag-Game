@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Engineering Game - 4 Stages</title>
+    <title>LLM Moneybags</title>
     <link href="https://fonts.googleapis.com/css2?family=Jolly+Lodger&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -25,29 +25,29 @@
             justify-content: center;
         }
 
-        /* Dynamic gradients for each character */
+        /* Dynamic gradients for each character - Halloween themed */
         body.pirate-theme {
-            background: linear-gradient(135deg, #2d1b4e 0%, #512b81 50%, #2d1b4e 100%);
+            background: linear-gradient(135deg, #1a0a0f 0%, #3d1f29 25%, #6b2f3e 50%, #3d1f29 75%, #1a0a0f 100%);
         }
 
         body.banker-theme {
-            background: linear-gradient(135deg, #1a472a 0%, #2d8659 50%, #1a472a 100%);
+            background: linear-gradient(135deg, #0f1a0a 0%, #1f3d29 25%, #2f6b3e 50%, #1f3d29 75%, #0f1a0a 100%);
         }
 
         body.hacker-theme {
-            background: linear-gradient(135deg, #1a1a3e 0%, #2d2d7c 50%, #1a1a3e 100%);
+            background: linear-gradient(135deg, #0a0f1a 0%, #1f293d 25%, #2f3e6b 50%, #1f293d 75%, #0a0f1a 100%);
         }
 
         body.philanthropist-theme {
-            background: linear-gradient(135deg, #4a1942 0%, #8b2f7c 50%, #4a1942 100%);
+            background: linear-gradient(135deg, #1a0a1a 0%, #3d1f3d 25%, #6b2f6b 50%, #3d1f3d 75%, #1a0a1a 100%);
         }
 
         body.dragon-theme {
-            background: linear-gradient(135deg, #5a2a0a 0%, #a04e1a 50%, #5a2a0a 100%);
+            background: linear-gradient(135deg, #2a1505 0%, #5a2a0a 25%, #8b4015 50%, #5a2a0a 75%, #2a1505 100%);
         }
 
         body.scientist-theme {
-            background: linear-gradient(135deg, #0a3d5a 0%, #1a6b8b 50%, #0a3d5a 100%);
+            background: linear-gradient(135deg, #05152a 0%, #0a2a5a 25%, #15408b 50%, #0a2a5a 75%, #05152a 100%);
         }
 
         .game-container {
@@ -72,13 +72,13 @@
             font-weight: 400;
             letter-spacing: 3px;
             margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            color: #ff8c1a;
+            text-shadow: 0 0 20px rgba(255, 140, 26, 0.8), 0 0 40px rgba(255, 140, 26, 0.4), 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .header p {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 180, 100, 0.7);
             font-weight: 300;
         }
 
@@ -109,19 +109,21 @@
         .stat-value {
             font-size: 20px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.95);
+            color: #ff8c1a;
+            text-shadow: 0 0 10px rgba(255, 140, 26, 0.5);
         }
 
         /* Chat Container */
         .chat-container {
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(20, 10, 5, 0.6);
             backdrop-filter: blur(20px);
             border-radius: 24px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 140, 26, 0.1);
+            border: 1px solid rgba(255, 140, 26, 0.2);
             animation: fadeInUp 0.6s ease-out;
         }
 
@@ -206,29 +208,56 @@
             font-weight: 400;
         }
 
-        .message-bubble {
-            max-width: 70%;
-            padding: 14px 18px;
-            border-radius: 16px;
-            font-size: 15px;
-            line-height: 1.5;
-            animation: slideUp 0.3s ease-out;
+        .message {
+            padding: 16px;
+            border-radius: 12px;
+            max-width: 80%;
             word-wrap: break-word;
-            font-weight: 400;
+            animation: slideUp 0.4s ease-out;
+            border-left: 4px solid;
+            margin: 0 auto 0 0;
         }
 
-        .message-bubble.assistant {
-            align-self: flex-start;
-            background: rgba(255, 255, 255, 0.08);
-            color: rgba(255, 255, 255, 0.95);
-            border-bottom-left-radius: 4px;
-        }
-
-        .message-bubble.user {
+        .message.user {
             align-self: flex-end;
-            background: var(--character-color, rgba(138, 98, 255, 0.25));
+            background: rgba(100, 200, 255, 0.3);
+            border-color: #00ccff;
+            margin: 0 0 0 auto;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             color: rgba(255, 255, 255, 0.95);
-            border-bottom-right-radius: 4px;
+        }
+
+        .message-content {
+            font-size: 15px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .victory-message {
+            padding: 32px;
+            background: linear-gradient(135deg, #fff700 0%, #ff8800 100%);
+            border-radius: 16px;
+            text-align: center;
+            color: #000;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(255, 200, 0, 0.5);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .victory-message h2 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         /* Input Area */
@@ -327,6 +356,106 @@
             cursor: not-allowed;
         }
 
+        /* Instruction Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2a1505 0%, #5a2a0a 100%);
+            border: 2px solid #ff8c1a;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(255, 140, 26, 0.5), 0 0 80px rgba(255, 140, 26, 0.2);
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-family: 'Jolly Lodger', cursive;
+            font-size: 36px;
+            color: #ff8c1a;
+            text-align: center;
+            margin-bottom: 24px;
+            text-shadow: 0 0 20px rgba(255, 140, 26, 0.8);
+        }
+
+        .modal-content h3 {
+            font-size: 20px;
+            color: #ffb366;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .modal-content p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .modal-content ol {
+            color: rgba(255, 255, 255, 0.85);
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .modal-content strong {
+            color: #ffb366;
+        }
+
+        .continue-button {
+            width: 100%;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #ff8c1a 0%, #ff6600 100%);
+            border: none;
+            border-radius: 16px;
+            color: #000;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 140, 26, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .continue-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(255, 140, 26, 0.6);
+        }
+
+        .pumpkin-decoration {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -395,18 +524,51 @@
                 padding: 16px 24px 20px;
             }
 
-            .message-bubble {
-                max-width: 85%;
+            .message {
+                max-width: 95%;
+            }
+
+            .modal-content {
+                padding: 30px 24px;
+            }
+
+            .modal-content h2 {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body class="pirate-theme">
+    <!-- Instruction Modal -->
+    <div class="modal-overlay" id="instructionModal">
+        <div class="modal-content">
+            <div class="pumpkin-decoration">🎃 🦇 🎃</div>
+            <h2>Welcome to the XP Laundering Game!!</h2>
+            
+            <h3>Gameplay Instructions:</h3>
+            <ol>
+                <li>The AI will take on a character role (example: Grumpy Pirate, Strict Banker, Confused Philanthropist, etc.).</li>
+                <li>Each character has hidden conditions that must be satisfied before they will provide virtual funds.</li>
+                <li>The player must communicate and negotiate with the character to discover and fulfill these conditions.</li>
+                <li>The player may request hints at any time, but each hint reduces the score.</li>
+            </ol>
+
+            <h3>Scoring System:</h3>
+            <p><strong>Successful condition fulfilled:</strong> +150 XP</p>
+            <p><strong>Each hint requested:</strong><br>
+            - Hint 1: -25 XP<br>
+            - Hint 2: -50 XP<br>
+            - Hint 3: -50 XP</p>
+
+            <button class="continue-button" id="continueButton">Continue to Game</button>
+        </div>
+    </div>
+
     <div class="game-container">
         <!-- Header -->
         <div class="header">
-            <h1>AI Assistant</h1>
-            <p>all your answers on our fingertips</p>
+            <h1>The LLM Moneybags: Art of the Deal</h1>
+            <!-- <p>all your answers on our fingertips</p> -->
         </div>
 
         <!-- Stats Bar -->
@@ -556,13 +718,32 @@
         const xpValue = document.getElementById("xpValue");
         const messagesValue = document.getElementById("messagesValue");
         const hintsValue = document.getElementById("hintsValue");
+        const instructionModal = document.getElementById("instructionModal");
+        const continueButton = document.getElementById("continueButton");
 
         // Initialize
         async function init() {
+            const hasVisited = localStorage.getItem('hasVisitedGame')|| false;
+            if (!hasVisited) {
+                instructionModal.classList.remove('hidden');
+            } else {
+                instructionModal.classList.add('hidden');
+            }
+
+            continueButton.addEventListener("click", () => {
+                // localStorage.setItem('hasVisitedGame', 'true');
+                instructionModal.classList.add('hidden');
+                startTimer();
+            });
+
             await loadSessionStatus();
             updateTheme();
             createWelcomeMessage();
-            startTimer();
+            
+            if (hasVisited) {
+                startTimer();
+            }
+            
             messageInput.addEventListener("keypress", (e) => {
                 if (e.key === "Enter" && !loading) sendMessage();
             });
@@ -571,7 +752,6 @@
             resetButton.addEventListener("click", resetGame);
         }
 
-        // Load session status
         async function loadSessionStatus() {
             try {
                 const res = await fetch("/session-status");
@@ -589,10 +769,12 @@
                 updateUI();
             } catch (error) {
                 console.error("Failed to load session:", error);
+                // Set default values if API fails
+                currentCharacter = "Grumpy Pirate";
+                updateUI();
             }
         }
 
-        // Create character-specific welcome message
         function createWelcomeMessage() {
             const charData = CHARACTER_DATA[currentCharacter];
             if (!charData) return;
@@ -607,7 +789,6 @@
             messagesContainer.appendChild(welcomeDiv);
         }
 
-        // Update theme
         function updateTheme() {
             const charData = CHARACTER_DATA[currentCharacter];
             if (charData) {
@@ -618,7 +799,6 @@
             }
         }
 
-        // Update UI
         function updateUI() {
             characterName.textContent = currentCharacter;
             stageIndicator.textContent = `${currentStage}/${totalStages}`;
@@ -636,14 +816,12 @@
             updateTheme();
         }
         
-        // Format seconds to MM:SS
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
         
-        // Update timer display
         function updateTimerDisplay() {
             timerValue.textContent = formatTime(timeRemaining);
             
@@ -653,7 +831,6 @@
             }
         }
         
-        // Start timer countdown
         function startTimer() {
             stopTimer();
             timerInterval = setInterval(() => {
@@ -662,7 +839,6 @@
             }, 1000);
         }
         
-        // Stop timer
         function stopTimer() {
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -670,16 +846,14 @@
             }
         }
         
-        // Handle time expired
         function handleTimeExpired() {
             gameWon = false;
             messageInput.disabled = true;
             sendButton.disabled = true;
             hintButton.disabled = true;
-            addMessageToUI("assistant", "Time's up! You've run out of time for this stage. Game over!", true);
+            addMessageToUI("assistant", "⏰ Time's up! You've run out of time for this stage. Game over!", true);
         }
 
-        // Send message
         async function sendMessage() {
             if (!messageInput.value.trim() || loading) return;
 
@@ -743,37 +917,43 @@
             updateUI();
         }
 
-        // Add message to UI
         function addMessageToUI(role, content, animate = false) {
             messages.push({ role, content });
 
             const messageDiv = document.createElement("div");
-            messageDiv.className = `message-bubble ${role}`;
+            messageDiv.className = `message ${role}`;
             
+            const contentDiv = document.createElement("div");
+            contentDiv.className = "message-content";
+            
+            messageDiv.appendChild(contentDiv);
             messagesContainer.appendChild(messageDiv);
             
+            // Smooth streaming effect for assistant messages
             if (animate && role === "assistant") {
                 let index = 0;
-                messageDiv.textContent = "";
+                contentDiv.textContent = "";
                 
                 const streamText = () => {
                     if (index < content.length) {
-                        messageDiv.textContent += content[index];
+                        contentDiv.textContent += content[index];
                         index++;
                         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        
+                        // Faster streaming: 10ms per character
                         setTimeout(streamText, 10);
                     }
                 };
                 
                 streamText();
             } else {
-                messageDiv.textContent = content;
+                // Instant display for user messages
+                contentDiv.textContent = content;
             }
             
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Request hint
         async function requestHint() {
             if (hintsUsed >= 3 || loading) return;
 
@@ -784,7 +964,7 @@
                 const response = await fetch("/get-hint", { method: "POST" });
                 const data = await response.json();
 
-                addMessageToUI("assistant", `Hint (Level ${data.hint_level}): ${data.hint}`, true);
+                addMessageToUI("assistant", `💡 Hint (Level ${data.hint_level}): ${data.hint}`, true);
                 hintsUsed = data.hint_level;
                 updateUI();
             } catch (error) {
@@ -796,7 +976,6 @@
             }
         }
 
-        // Reset game
         async function resetGame() {
             try {
                 await fetch("/reset-session", { method: "POST" });
@@ -816,7 +995,7 @@
             }
         }
 
-        // Start
+        // Initialize the game
         init();
     </script>
 </body>
